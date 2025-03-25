@@ -1,10 +1,10 @@
-import { useContext } from 'react';
-import { UserContext } from '../context/UserContext.jsx';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { UserContext } from '../context/UserContext.jsx';
 
 const baseUrl = 'http://localhost:3030/users';
 
+// Logout hook
 export const useLogout = () => {
     const { setUser } = useContext(UserContext);
 
@@ -19,6 +19,7 @@ export const useLogout = () => {
 
             if (response.status === 204) {
                 localStorage.removeItem('authToken');
+                localStorage.removeItem('username');
                 setUser(null);
             }
         } catch (error) {
@@ -29,7 +30,9 @@ export const useLogout = () => {
     return { logout };
 };
 
+// Login hook
 export const useLogin = () => {
+    const { setUser } = useContext(UserContext);  // Use context to get setUser
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
@@ -47,13 +50,11 @@ export const useLogin = () => {
 
             const data = await response.json();
             const token = data.accessToken;
-            console.log(data);
-
 
             localStorage.setItem('authToken', token);
             localStorage.setItem('username', data.username);
+            setUser({ token, username: data.username, email});  
             navigate('/');
-            //window.location.reload();  
         } catch (error) {
             setError(error.message);
             console.error(error);
@@ -63,6 +64,7 @@ export const useLogin = () => {
     return { login, error };
 };
 
+// Register hook
 export const useRegister = () => {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
@@ -83,7 +85,6 @@ export const useRegister = () => {
             if (!response.ok) throw new Error('Registration failed');
 
             const data = await response.json();
-            console.log('Registration successful:', data);
             navigate('/login');
         } catch (error) {
             setError(error.message);
