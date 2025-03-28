@@ -25,7 +25,7 @@ const Images = () => {
     const handleDelete = async (id) => {
         try {
             await deleteImage(id); 
-            setImages(images.filter(img => img._id !== id));
+            setImages(images.filter(img => img._id !== id)); // Актуализиране на списъка със снимки
         } catch (err) {
             setError(err.message);
         }
@@ -39,13 +39,13 @@ const Images = () => {
                     <div key={img._id} className="image-card">
                         <img src={img.imageUrl} alt={img.title} />
                         <h3>{img.title}</h3>
-                        {user && user.token === img.userId ? (
+                        {user && user.username === img.userId ? ( // Проверка дали потребителят е собственик на изображението
                             <div className="actions">
-                                <button onClick={() => navigate(`/edit/${img._id}`)}>Edit</button>
-                                <button onClick={() => handleDelete(img._id)} className="delete">Delete</button>
+                                <button onClick={() => navigate(`/edit/${img._id}`)}>Edit</button> {/* Навигиране към редактиране */}
+                                <button onClick={() => handleDelete(img._id)} className="delete">Delete</button> {/* Изтриване на изображението */}
                             </div>
                         ) : (
-                            <button className="favorite">Favorite</button>
+                            <button className="favorite">Favorite</button> 
                         )}
                     </div>
                 ))}

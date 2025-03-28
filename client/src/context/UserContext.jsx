@@ -1,20 +1,25 @@
-import { createContext, useState, useEffect } from 'react';
+import React, { createContext, useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
 
+// Създаване на UserContext
 export const UserContext = createContext();
 
-export function UserProvider({ children }) {
-  const [user, setUser] = useState(null);
+// Компонент за предоставяне на контекста
+export const UserProvider = ({ children }) => {
+    const [user, setUser] = useState(null);
 
-  useEffect(() => {
-    const token = localStorage.getItem('authToken');
-    if (token) {
-      setUser({ token });
-    }
-  }, []);
+    useEffect(() => {
+        const token = Cookies.get('authToken');
+        const username = Cookies.get('username');
 
-  return (
-    <UserContext.Provider value={{ user, setUser }}>
-      {children}
-    </UserContext.Provider>
-  );
-}
+        if (token && username) {
+            setUser({ token, username });
+        }
+    }, []); // This runs only once when the component is mounted
+
+    return (
+        <UserContext.Provider value={{ user, setUser }}>
+            {children}
+        </UserContext.Provider>
+    );
+};

@@ -19,3 +19,36 @@ export const deleteImage = async (id) => {
         throw new Error(err.message);
     }
 };
+
+export const updateImage = async (id, updatedImage) => {
+    try {
+        const response = await fetch(`${baseUrl}/${id}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(updatedImage),
+        });
+
+        if (!response.ok) throw new Error('Failed to update image');
+        return await response.json(); 
+    } catch (err) {
+        throw new Error(err.message);
+    }
+};
+
+// Функция за създаване на ново изображение
+export const createImage = async (newImage) => {
+    try {
+        const response = await fetch(baseUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(newImage),
+        });
+
+        if (!response.ok) throw new Error('Failed to upload image');
+        return await response.json();
+    } catch (err) {
+        throw new Error(err.message);
+    }
+};
