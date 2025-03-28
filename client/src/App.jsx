@@ -6,6 +6,7 @@ import Register from './components/Register/Register.jsx';
 import Logout from './components/Logout/Logout.jsx';
 import { UserProvider } from './context/UserContext.jsx';
 import Create from './components/CreateImg/Create.jsx';
+import Images from './components/Images/Images.jsx';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
             <Route path='/register' element={<Register />} />
             <Route path='/logout' element={<Logout />} />
             <Route path='/create' element={<Create />} />
+            <Route path='/gallery' element={<Images />} />
           </Routes>
         </main>
       </div>
