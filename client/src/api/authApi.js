@@ -45,24 +45,30 @@ export const useLogin = () => {
                 },
                 body: JSON.stringify({ email, password }),
             });
-
+        
             if (!response.ok) throw new Error('Login failed');
-
+        
             const data = await response.json();
             const token = data.accessToken;
-
+            const username = data.username; // Получаваш username
+        
+            // Записваш username и token в localStorage
             localStorage.setItem('authToken', token);
-            localStorage.setItem('username', data.username);
-            setUser({ token, username: data.username, email});  
+            localStorage.setItem('username', username); // Записваш username в localStorage
+            
+            setUser({ token, username });
             navigate('/');
         } catch (error) {
             setError(error.message);
             console.error(error);
         }
     };
+    
+    
 
     return { login, error };
 };
+
 
 // Register hook
 export const useRegister = () => {
@@ -75,6 +81,13 @@ export const useRegister = () => {
             return;
         }
 
+        // Basic email validation
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            setError('Invalid email format');
+            return;
+        }
+
         try {
             const response = await fetch(`${baseUrl}/register`, {
                 method: 'POST',
@@ -82,9 +95,11 @@ export const useRegister = () => {
                 body: JSON.stringify({ email, password, username }),
             });
 
-            if (!response.ok) throw new Error('Registration failed');
+            if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(errorData.message || 'Registration failed');
+            }
 
-            const data = await response.json();
             navigate('/login');
         } catch (error) {
             setError(error.message);
@@ -94,3 +109,4 @@ export const useRegister = () => {
 
     return { register, error };
 };
+

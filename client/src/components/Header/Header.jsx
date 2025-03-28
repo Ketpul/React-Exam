@@ -8,13 +8,14 @@ export default function Header() {
 
   useEffect(() => {
     const token = localStorage.getItem('authToken');
-    if (token) {
-      // Retrieve username along with token if available
-      const username = localStorage.getItem('username');
-      setUser({ token, username });
+    const username = localStorage.getItem('username'); 
+    if (token && username) {
+        setUser({ token, username }); 
     }
     setLoading(false);
-  }, [setUser]);
+}, [setUser]);
+
+
 
   if (loading) {
     return null; 
@@ -32,7 +33,7 @@ export default function Header() {
         {user ? (
           <>
             <span>Welcome, {user.username}</span>
-            <Link to="/games">Users</Link>
+            <Link to="/create">Create</Link>
             <div id="user">
               <Link to="/logout">Logout</Link>
             </div>

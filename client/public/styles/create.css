@@ -1,0 +1,39 @@
+.upload-container {
+    background-color: black;
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 300px;
+    margin: auto;
+    text-align: center;
+}
+
+input {
+    display: block;
+    width: 100%;
+    margin: 10px 0;
+    padding: 8px;
+    border: 1px solid white;
+    background: black;
+    color: white;
+}
+
+button {
+    background: white;
+    color: black;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background: gray;
+}
+
+.error {
+    color: red;
+}
+
+.success {
+    color: green;
+}
