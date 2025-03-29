@@ -12,11 +12,9 @@ const FavoriteImages = () => {
         const fetchFavorites = async () => {
             if (user) {
                 try {
-                    // Вземи любими снимки, свързани с потребителя
-                    const userFavorites = await getFavorites(user.username); // Използваме user.username тук
-                    setFavorites(userFavorites.map(fav => fav.imageId)); // Вземи само imageId
+                    const userFavorites = await getFavorites(user.username); 
+                    setFavorites(userFavorites.map(fav => fav.imageId)); 
                     
-                    // Вземи всички снимки
                     const imagesData = await getAllImages();
                     setImages(imagesData);
                 } catch (err) {

@@ -1,9 +1,8 @@
-/* FavoriteImages.css */
 .favorites-container {
     padding: 20px;
     text-align: center;
-    background-color: #f0f0f0; /* Светъл фон за контейнера */
-    color: black; /* Черен текст */
+    background-color: #f0f0f0; 
+    color: black; 
 }
 
 .favorites-grid {
@@ -14,12 +13,12 @@
 }
 
 .image-card {
-    background-color: #333; /* Черен фон за картата */
+    background-color: #333; 
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     overflow: hidden;
     transition: transform 0.3s ease;
-    color: white; /* Бял текст в картата */
+    color: white; 
 }
 
 .image-card:hover {

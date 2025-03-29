@@ -16,8 +16,8 @@ const Images = () => {
                 const imagesData = await getAllImages();  
                 setImages(imagesData);
                 if (user) {
-                    const userFavorites = await getFavorites(user.username); // Използваме username
-                    setFavorites(userFavorites.map(fav => fav.imageId)); // Load user favorites
+                    const userFavorites = await getFavorites(user.username); 
+                    setFavorites(userFavorites.map(fav => fav.imageId)); 
                 }
             } catch (err) {
                 setError(err.message);
@@ -42,12 +42,10 @@ const Images = () => {
 
         try {
             if (favorites.includes(id)) {
-                // Remove favorite
-                await removeFavorite(user.username, id); // Използваме username
+                await removeFavorite(user.username, id); 
                 setFavorites(favorites.filter(favId => favId !== id));
             } else {
-                // Add favorite
-                await addFavorite(user.username, id); // Използваме username
+                await addFavorite(user.username, id); 
                 setFavorites([...favorites, id]);
             }
         } catch (err) {

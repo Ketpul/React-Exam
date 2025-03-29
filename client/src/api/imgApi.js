@@ -1,5 +1,3 @@
-// imgApi.js
-
 const baseUrl = 'http://localhost:3030/jsonstore/images';
 
 export const getAllImages = async () => {
@@ -54,7 +52,6 @@ export const createImage = async (newImage) => {
     }
 };
 
-// Добавяне на любима снимка
 export const addFavorite = async (username, imageId) => {
     try {
         const response = await fetch(`http://localhost:3030/jsonstore/favorites`, {
@@ -69,7 +66,6 @@ export const addFavorite = async (username, imageId) => {
     }
 };
 
-// Премахване на любима снимка
 export const removeFavorite = async (username, imageId) => {
     try {
         const response = await fetch(`http://localhost:3030/jsonstore/favorites`, {
@@ -83,15 +79,12 @@ export const removeFavorite = async (username, imageId) => {
     }
 };
 
-// Получаване на любими снимки на потребител, като филтрираме на клиента по username
-// Извличане на всички любими снимки, филтрирани по username
 export const getFavorites = async (username) => {
     try {
         const response = await fetch(`http://localhost:3030/jsonstore/favorites`);
         if (!response.ok) throw new Error('Failed to fetch favorites');
         const data = await response.json();
 
-        // Преобразуване на данните в масив и филтриране по username
         const userFavorites = Object.values(data).filter(fav => fav.username === username);
 
         return userFavorites;

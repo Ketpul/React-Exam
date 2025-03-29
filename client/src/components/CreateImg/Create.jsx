@@ -7,18 +7,17 @@ const baseUrl = 'http://localhost:3030/jsonstore/images';
 
 const Create = () => {
     const { user } = useContext(UserContext);
-    const { imageId } = useParams(); // Extract imageId from URL params
+    const { imageId } = useParams(); 
     const [imageUrl, setImageUrl] = useState('');
     const [title, setTitle] = useState('');
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    // Fetch existing image if imageId exists
     useEffect(() => {
         if (imageId) {
             const fetchImage = async () => {
                 try {
-                    const images = await getAllImages(); // Fetch all images
+                    const images = await getAllImages();
                     const foundImage = images.find(img => img._id === imageId);
                     if (foundImage) {
                         setImageUrl(foundImage.imageUrl);
@@ -49,7 +48,7 @@ const Create = () => {
         }
 
         const newImage = {
-            userId: user.username,  // Use username instead of token for identifying the user
+            userId: user.username,  
             title,
             imageUrl
         };
@@ -57,15 +56,13 @@ const Create = () => {
         try {
             let response;
             if (imageId) {
-                // Update existing image
                 response = await updateImage(imageId, newImage);
             } else {
-                // Create new image
                 response = await createImage(newImage);
             }
 
             if (response) {
-                navigate('/gallery');  // Redirect to gallery after submission
+                navigate('/gallery');  
             }
         } catch (err) {
             setError('An error occurred while uploading the image.');

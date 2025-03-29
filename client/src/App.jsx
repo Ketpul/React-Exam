@@ -1,9 +1,9 @@
-import { Route, Routes } from 'react-router'; // Забележка: Импортирай от 'react-router-dom'
+import { Route, Routes } from 'react-router'; 
 import './App.css';
 import Header from './components/Header/Header.jsx';
 import Register from './components/Register/Register.jsx';
 import Logout from './components/Logout/Logout.jsx';
-import { UserProvider } from './context/UserContext.jsx'; // Импортиране на UserProvider
+import { UserProvider } from './context/UserContext.jsx'; 
 import Create from './components/CreateImg/Create.jsx';
 import Images from './components/Images/Images.jsx';
 import Login from './components/login/login.jsx';
