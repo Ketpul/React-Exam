@@ -1,0 +1,45 @@
+/* FavoriteImages.css */
+.favorites-container {
+    padding: 20px;
+    text-align: center;
+    background-color: #f0f0f0; /* Светъл фон за контейнера */
+    color: black; /* Черен текст */
+}
+
+.favorites-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.image-card {
+    background-color: #333; /* Черен фон за картата */
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    transition: transform 0.3s ease;
+    color: white; /* Бял текст в картата */
+}
+
+.image-card:hover {
+    transform: scale(1.05);
+}
+
+.image-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-bottom: 2px solid #444; 
+}
+
+.image-card h3 {
+    padding: 10px;
+    font-size: 1.2rem;
+    color: #fff; 
+}
+
+.error {
+    color: red;
+    margin-top: 20px;
+}

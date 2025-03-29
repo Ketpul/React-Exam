@@ -1,11 +1,12 @@
 import { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router';
 import { UserContext } from '../../context/UserContext.jsx';
-import { deleteImage, getAllImages } from '../../api/imgApi.js';
+import { deleteImage, getAllImages, addFavorite, removeFavorite, getFavorites } from '../../api/imgApi.js';
 
 const Images = () => {
     const { user } = useContext(UserContext);
     const [images, setImages] = useState([]);
+    const [favorites, setFavorites] = useState([]);
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
@@ -14,18 +15,41 @@ const Images = () => {
             try {
                 const imagesData = await getAllImages();  
                 setImages(imagesData);
+                if (user) {
+                    const userFavorites = await getFavorites(user.username); // Използваме username
+                    setFavorites(userFavorites.map(fav => fav.imageId)); // Load user favorites
+                }
             } catch (err) {
                 setError(err.message);
             }
         };
 
         fetchImages();
-    }, []);
+    }, [user]);
 
     const handleDelete = async (id) => {
         try {
-            await deleteImage(id); 
-            setImages(images.filter(img => img._id !== id)); // Актуализиране на списъка със снимки
+            await deleteImage(id);
+            setImages(images.filter(img => img._id !== id));
+            setFavorites(favorites.filter(favId => favId !== id));
+        } catch (err) {
+            setError(err.message);
+        }
+    };
+
+    const handleFavorite = async (id) => {
+        if (!user) return alert('You must be logged in to favorite an image.');
+
+        try {
+            if (favorites.includes(id)) {
+                // Remove favorite
+                await removeFavorite(user.username, id); // Използваме username
+                setFavorites(favorites.filter(favId => favId !== id));
+            } else {
+                // Add favorite
+                await addFavorite(user.username, id); // Използваме username
+                setFavorites([...favorites, id]);
+            }
         } catch (err) {
             setError(err.message);
         }
@@ -35,17 +59,22 @@ const Images = () => {
         <div className="images-container">
             {error && <p className="error">{error}</p>}
             <div className="images-grid">
-                {images.map((img) => (
-                    <div key={img._id} className="image-card">
+                {images.map((img, index) => (
+                    <div key={img._id || `image-${index}`} className="image-card">
                         <img src={img.imageUrl} alt={img.title} />
                         <h3>{img.title}</h3>
-                        {user && user.username === img.userId ? ( // Проверка дали потребителят е собственик на изображението
+                        {user && user.username === img.userId ? (
                             <div className="actions">
-                                <button onClick={() => navigate(`/edit/${img._id}`)}>Edit</button> {/* Навигиране към редактиране */}
-                                <button onClick={() => handleDelete(img._id)} className="delete">Delete</button> {/* Изтриване на изображението */}
+                                <button onClick={() => navigate(`/edit/${img._id}`)}>Edit</button>
+                                <button onClick={() => handleDelete(img._id)} className="delete">Delete</button>
                             </div>
                         ) : (
-                            <button className="favorite">Favorite</button> 
+                            <button 
+                                className={favorites.includes(img._id) ? 'favorite active' : 'favorite'}
+                                onClick={() => handleFavorite(img._id)}
+                            >
+                                {favorites.includes(img._id) ? 'Unfavorite' : 'Favorite'}
+                            </button>
                         )}
                     </div>
                 ))}

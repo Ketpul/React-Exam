@@ -35,6 +35,7 @@ export default function Header() {
             <span>Welcome, {user.username}</span>
             <Link to="/create">Create</Link>
             <Link to="/gallery">Gallery</Link>
+            <Link to="/favorite">Favorite</Link>
             <div id="user">
               <Link to="/logout">Logout</Link>
             </div>
