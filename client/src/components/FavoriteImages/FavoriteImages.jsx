@@ -1,30 +1,35 @@
 import { useState, useEffect, useContext } from 'react';
 import { UserContext } from '../../context/UserContext.jsx';
 import { getFavorites, getAllImages } from '../../api/imgApi.js';
+import { useNavigate } from 'react-router';
 
 const FavoriteImages = () => {
     const { user } = useContext(UserContext);
     const [favorites, setFavorites] = useState([]);
     const [images, setImages] = useState([]);
     const [error, setError] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
+        if (!user) {
+            navigate('/login'); 
+            return;
+        }
+
         const fetchFavorites = async () => {
-            if (user) {
-                try {
-                    const userFavorites = await getFavorites(user.username); 
-                    setFavorites(userFavorites.map(fav => fav.imageId)); 
-                    
-                    const imagesData = await getAllImages();
-                    setImages(imagesData);
-                } catch (err) {
-                    setError(err.message);
-                }
+            try {
+                const userFavorites = await getFavorites(user.username); 
+                setFavorites(userFavorites.map(fav => fav.imageId)); 
+                
+                const imagesData = await getAllImages();
+                setImages(imagesData);
+            } catch (err) {
+                setError(err.message);
             }
         };
 
         fetchFavorites();
-    }, [user]);
+    }, [user, navigate]); 
 
     return (
         <div className="favorites-container">
