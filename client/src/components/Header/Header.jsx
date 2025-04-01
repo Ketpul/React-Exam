@@ -27,7 +27,7 @@ export default function Header() {
   return (
     <header>
       <h1>
-        <Link to="/">RecMes</Link>
+        <Link to="/">ArtShare</Link>
       </h1>
       <nav>
         {user ? (
@@ -36,6 +36,7 @@ export default function Header() {
             <Link to="/create">Create</Link>
             <Link to="/gallery">Gallery</Link>
             <Link to="/favorite">Favorite</Link>
+            <Link to="/about">About</Link>
             <div id="user">
               <Link to="/logout">Logout</Link>
             </div>

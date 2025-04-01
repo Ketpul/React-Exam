@@ -8,6 +8,9 @@ import Create from './components/CreateImg/Create.jsx';
 import Images from './components/Images/Images.jsx';
 import Login from './components/login/login.jsx';
 import FavoriteImages from './components/FavoriteImages/FavoriteImages.jsx';
+import About from './components/About/About.jsx';
+import Footer from './components/Footer/Footer.jsx';
+import HomePage from './components/Home/Home.jsx';
 
 function App() {
   return (
@@ -23,11 +26,15 @@ function App() {
             <Route path='/edit/:imageId' element={<Create />} />
             <Route path='/gallery' element={<Images />} />
             <Route path='/favorite' element={<FavoriteImages />} />
+            <Route path='/about' element={<About />} />
+            <Route path='/' element={<HomePage />} />
           </Routes>
         </main>
       </div>
+        <Footer /> 
     </UserProvider>
   );
 }
+
 
 export default App;

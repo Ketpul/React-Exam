@@ -4,21 +4,30 @@ export const getAllImages = async () => {
     try {
         const response = await fetch(baseUrl);
         if (!response.ok) throw new Error('Failed to fetch images');
-        return Object.values(await response.json());
+        
+        const text = await response.text(); // Взимаме съдържанието като текст
+        if (!text) return []; // Ако няма съдържание, връщаме празен масив
+
+        return Object.values(JSON.parse(text));
     } catch (err) {
         throw new Error(err.message);
     }
 };
+
 
 export const deleteImage = async (id) => {
     if (!window.confirm('Are you sure you want to delete this image?')) return;
     try {
         const response = await fetch(`${baseUrl}/${id}`, { method: 'DELETE' });
         if (!response.ok) throw new Error('Failed to delete image');
+
+        const text = await response.text();
+        return text ? JSON.parse(text) : null;
     } catch (err) {
         throw new Error(err.message);
     }
 };
+
 
 export const updateImage = async (id, updatedImage) => {
     try {
@@ -68,27 +77,43 @@ export const addFavorite = async (username, imageId) => {
 
 export const removeFavorite = async (username, imageId) => {
     try {
-        const response = await fetch(`http://localhost:3030/jsonstore/favorites`, {
-            method: 'DELETE',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, imageId }),
-        });
-        if (!response.ok) throw new Error('Failed to remove favorite');
+        const response = await fetch(`http://localhost:3030/jsonstore/favorites`);
+        if (!response.ok) throw new Error('Failed to fetch favorites');
+
+        const data = await response.json();
+
+        const favoriteToRemove = Object.values(data).find(fav => fav.username === username && fav.imageId === imageId);
+
+        if (favoriteToRemove) {
+            const deleteResponse = await fetch(`http://localhost:3030/jsonstore/favorites/${favoriteToRemove._id}`, {
+                method: 'DELETE',
+                headers: { 'Content-Type': 'application/json' },
+            });
+
+            if (!deleteResponse.ok) throw new Error('Failed to remove favorite');
+
+        } else {
+            throw new Error('Favorite not found');
+        }
+
     } catch (err) {
         throw new Error(err.message);
     }
 };
+
 
 export const getFavorites = async (username) => {
     try {
         const response = await fetch(`http://localhost:3030/jsonstore/favorites`);
         if (!response.ok) throw new Error('Failed to fetch favorites');
-        const data = await response.json();
 
-        const userFavorites = Object.values(data).filter(fav => fav.username === username);
+        const text = await response.text();
+        if (!text) return [];
 
-        return userFavorites;
+        const data = JSON.parse(text);
+        return Object.values(data).filter(fav => fav.username === username);
     } catch (err) {
         throw new Error(err.message);
     }
 };
+
