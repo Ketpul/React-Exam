@@ -1,46 +1,49 @@
 import React, { useEffect, useState } from 'react';
-
+import { getAllImages } from '../../api/imgApi'; 
 const HomePage = () => {
-  const [images, setImages] = useState([]);
+    const [images, setImages] = useState([]);
+    const [error, setError] = useState(null);
 
-  useEffect(() => {
-    // Зареждаме снимки (тук ще използваме примерен API за изображение)
-    const fetchImages = async () => {
-      try {
-        const response = await fetch('https://api.example.com/images'); // Примерен API
-        const data = await response.json();
-        setImages(data);
-      } catch (error) {
-        console.error('Error fetching images:', error);
-      }
-    };
-    fetchImages();
-  }, []);
+    useEffect(() => {
+        const fetchImages = async () => {
+            try {
+                const imagesData = await getAllImages();
+                setImages(imagesData.slice(0, 3)); 
+            } catch (err) {
+                setError(err.message);
+            }
+        };
 
-  return (
-    <div className="home-page">
-      <section className="intro-section">
-        <h1>Добре дошли в нашето приложение!</h1>
-        <p>Тук можете да откриете най-новите и най-популярни снимки, качени от нашите потребители.</p>
-      </section>
-      
-      <section className="image-gallery">
-        <h2>Нашата галерия</h2>
-        <div className="images-grid">
-          {images.length > 0 ? (
-            images.map((image) => (
-              <div className="image-card" key={image.id}>
-                <img src={image.url} alt={image.title} />
-                <h3>{image.title}</h3>
-              </div>
-            ))
-          ) : (
-            <p>Зареждаме снимките...</p>
-          )}
+        fetchImages();
+    }, []);
+
+    return (
+        <div className="home-page">
+            <section className="intro-section">
+                <h1>Welcome to our app!</h1>
+                <p>Here you can discover the latest and most popular images uploaded by our users.</p>
+
+            </section>
+
+            <section className="image-gallery">
+                {error && <p className="error">{error}</p>}
+                <div className="image-frame">
+                    <div className="images-grid">
+                        {images.length > 0 ? (
+                            images.map((image) => (
+                                <div className="image-card" key={image._id}>
+                                    <img src={image.imageUrl} alt={image.title} />
+                                    <h3>{image.title}</h3>
+                                </div>
+                            ))
+                        ) : (
+                            <p>Зареждаме снимките...</p>
+                        )}
+                    </div>
+                </div>
+            </section>
         </div>
-      </section>
-    </div>
-  );
+    );
 };
 
 export default HomePage;

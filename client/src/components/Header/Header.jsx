@@ -15,34 +15,33 @@ export default function Header() {
     setLoading(false);
 }, [setUser]);
 
-
-
   if (loading) {
     return null; 
   }
 
   console.log(user);
-  
 
   return (
     <header>
       <h1>
         <Link to="/">ArtShare</Link>
       </h1>
-      <nav>
+      <nav className="nav-links">
         {user ? (
           <>
-            <span>Welcome, {user.username}</span>
-            <Link to="/create">Create</Link>
-            <Link to="/gallery">Gallery</Link>
-            <Link to="/favorite">Favorite</Link>
-            <Link to="/about">About</Link>
-            <div id="user">
+            <div className="user-links">
+              <span>Welcome, {user.username}</span>
+              <Link to="/create">Create</Link>
+              <Link to="/gallery">Gallery</Link>
+              <Link to="/favorite">Favorite</Link>
+              <Link to="/about">About</Link>
               <Link to="/logout">Logout</Link>
             </div>
           </>
         ) : (
           <div id="guest">
+            <Link to="/gallery">Gallery</Link>
+            <Link to="/about">About</Link>
             <Link to="/login">Login</Link>
             <Link to="/register">Register</Link>
           </div>

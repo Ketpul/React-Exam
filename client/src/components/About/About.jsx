@@ -6,14 +6,14 @@ const About = () => {
             <div className="about-content">
                 <h1>Welcome to ArtShare</h1>
                 <p>
-                    ArtShare е платформа, където всеки може да качи своите рисунки и
-                    снимки, да открие вдъхновение от другите и да сподели изкуството си
-                    със света.
+                    ArtShare is a platform where everyone can upload their drawings and
+                    photos, find inspiration from others, and share their art with the world.
                 </p>
                 <p>
-                    Присъединете се към нашата общност, оценявайте и коментирайте творби,
-                    добавяйте любими изображения и откривайте невероятни артисти!
+                    Join our community, rate and comment on artworks, add favorite images, and
+                    discover amazing artists!
                 </p>
+
             </div>
             <div className="map-container">
                 <iframe

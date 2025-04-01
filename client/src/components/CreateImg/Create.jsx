@@ -6,7 +6,7 @@ import { createImage, updateImage, getAllImages } from '../../api/imgApi.js';
 const baseUrl = 'http://localhost:3030/jsonstore/images';
 
 const Create = () => {
-    const { user } = useContext(UserContext);
+    const { user } = useContext(UserContext); // Извличаме потребителя от контекста
     const { imageId } = useParams(); 
     const [imageUrl, setImageUrl] = useState('');
     const [title, setTitle] = useState('');
@@ -14,6 +14,11 @@ const Create = () => {
     const navigate = useNavigate();
 
     useEffect(() => {
+        if (!user) {
+            // Ако няма потребител (не е логнат), пренасочваме към страницата за логин
+            navigate('/login');
+        }
+        
         if (imageId) {
             const fetchImage = async () => {
                 try {
@@ -32,7 +37,7 @@ const Create = () => {
             };
             fetchImage();
         }
-    }, [imageId]);
+    }, [imageId, user, navigate]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
